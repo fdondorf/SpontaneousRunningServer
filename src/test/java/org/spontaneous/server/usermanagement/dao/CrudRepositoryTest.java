@@ -4,9 +4,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.spontaneous.server.usermanagement.dao.CustomerRepository;
 import org.spontaneous.server.usermanagement.entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -14,9 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author fdondorf
  *
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class CrudRepositoryTest {
+public class CrudRepositoryTest extends AbstractJPATest {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
