@@ -112,7 +112,8 @@ public class UserManagementControllerTest {
 //                .andExpect(MockMvcResultMatchers.status().isOk());
 //    }
     
-    protected String json(Object o) throws IOException {
+    @SuppressWarnings("unchecked")
+	protected String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
         this.mappingJackson2HttpMessageConverter.write(
                 o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
