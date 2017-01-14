@@ -5,6 +5,7 @@
 target/
 /target/
 eclipse-target/
+*.metadata/
 
 # Package Files #
 *.jar
