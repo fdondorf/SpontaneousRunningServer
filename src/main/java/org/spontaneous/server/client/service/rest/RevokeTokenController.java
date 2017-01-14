@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Horst Jilg
  */
 @RestController
-public class RevokeTokenController extends AbstractClientController {
+public class RevokeTokenController extends AbstractClientAuthController {
   private static final Logger LOG = LoggerFactory.getLogger(RevokeTokenController.class);
 
   /**

@@ -1,6 +1,6 @@
 
 "Refresh-Token"
-http://localhost:8080/spontaneous/auth/token?username=secret&password=admin&grant_type=password
+http://localhost:8080/spontaneous/secure/auth/token?username=secret&password=admin&grant_type=password
 (mit Authentication spontaneous-client : spontaneous-secret)
 
 "UserInfo"

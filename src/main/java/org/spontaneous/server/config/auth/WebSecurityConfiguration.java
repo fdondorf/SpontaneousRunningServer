@@ -59,7 +59,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 	http.headers().addHeaderWriter(new StaticHeadersWriter("Server", "Spontaneous Running Backend"));
-    http.requestMatchers().antMatchers("/spontaneous/**");
+    http.requestMatchers().antMatchers("/spontaneous/secure/**");
     http.csrf().disable();
   }
 

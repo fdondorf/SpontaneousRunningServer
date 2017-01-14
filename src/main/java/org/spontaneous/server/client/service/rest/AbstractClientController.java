@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Superclass for all client controllers used for the mobile client requests.
+ * Superclass for all client controllers used for the mobile client requests not under oauth control..
  * <p>
  * Common functionality to get a logged in user and to validate header data.
  *
@@ -29,42 +29,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AbstractClientController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractClientController.class);
-	
-	  @Autowired
-	  protected AuthenticationService authenticationService;
-
-	  @Autowired
-	  protected ConsumerTokenServices consumerTokenServices;
-	  
-	  @Autowired
-	  protected TokenStore tokenStore;
-	  
-//	  @Autowired
-//	  @Qualifier("authServerTokenServiceBean")
-//	  protected AuthorizationServerTokenServices authorizationServerTokenServices;
-	  
-	  /**
-	   * Get the authenticated user.
-	   * 
-	   * @param principal - a spring-security principal
-	   * @return an authenticated {@link AuthenticatedUser}
-	   */
-	 public AuthenticatedUser getAuthUser(Principal principal) {
-		  
-		 LOG.info("Calling getAuthUser...");
-		  
-		 AuthenticatedUser user = null;
-		 if (principal instanceof OAuth2Authentication) {
-			 OAuth2Authentication authentication = (OAuth2Authentication) principal;
-			 if (authentication.getPrincipal() instanceof AuthenticatedUser) {
-				 user = (AuthenticatedUser) authentication.getPrincipal();
-			 }
-		 }
-
-		 if (user == null) {
-			 throw new UnauthorizedClientException("No logged in user found");
-		 }
-		 return user;
-	  }
 	 
 }

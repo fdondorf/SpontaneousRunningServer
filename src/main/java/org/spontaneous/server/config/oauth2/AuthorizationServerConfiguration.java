@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
  * Configuration for the OAuth2 AuthorizationServer.
  * <p>
  * The AuthorizationServer uses an InMemoryTokenStore and the {@link TimeToLiveTokenServices}. The AuthenticationManager needs to be set for the
- * AuthorizationServerEndpoint, otherwise you cannot use the "password" grant. It uses the URL "/pshop-client/auth/token" for the
+ * AuthorizationServerEndpoint, otherwise you cannot use the "password" grant. It uses the URL "/spontaneous/secure/auth/token" for the
  * AuthorizationServerEndpoint for the token-request.
  *
  * @author Horst Jilg
@@ -32,20 +32,20 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-  @Value("spontaneous")
+  @Value("${oauth.resourceId}")
   private String resourceId;
 
-  @Value("spontaneous-client")
+  @Value("${oauth.clientId}")
   private String clientId;
 
-  @Value("spontaneous-secret")
+  @Value("${oauth.clientSecret}")
   private String clientSecret;
 
   @Autowired
   @Qualifier("authenticationManagerBean")
   private AuthenticationManager authenticationManager;
 
-  private TokenStore tokenStore = new InMemoryTokenStore();
+  //private TokenStore tokenStore = new InMemoryTokenStore();
 
   @Autowired
   private ClientDetailsService clientDetailsService;
@@ -80,7 +80,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         .tokenServices(getTokenServices())
         .tokenGranter(
             new ParcelshopResourceOwnerPasswordTokenGranter(authenticationManager, endpoints.getTokenServices(), clientDetailsService,
-                new DefaultOAuth2RequestFactory(clientDetailsService))).pathMapping("/oauth/token", "/spontaneous/auth/token");
+                new DefaultOAuth2RequestFactory(clientDetailsService))).pathMapping("/oauth/token", "/spontaneous/secure/auth/token");
   }
 
   private TimeToLiveTokenServices getTokenServices() {

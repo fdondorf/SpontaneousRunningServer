@@ -2,6 +2,7 @@ package org.spontaneous.server;
 
 import java.util.Arrays;
 
+import org.apache.catalina.connector.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spontaneous.server.auth.AuthConfig;
@@ -10,8 +11,11 @@ import org.spontaneous.server.auth.logic.impl.AuthenticationServiceImpl;
 import org.spontaneous.server.client.ClientConfig;
 import org.spontaneous.server.common.CommonConfig;
 import org.spontaneous.server.config.ConfigConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -29,6 +33,15 @@ public class Application {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 
+	@Value("${tomcat.ajp.port}")
+	int ajpPort;
+
+	@Value("${tomcat.ajp.remoteauthentication}")
+	String remoteAuthentication;
+
+	@Value("${tomcat.ajp.enabled}")
+	boolean tomcatAjpEnabled;
+	
 	public static void main(String[] args) {
 		
 		LOG.info("Start ApplicationContext...");
@@ -51,6 +64,24 @@ public class Application {
 	  @Bean
 	  public AuthenticationService authenticationService() {
 	    return new AuthenticationServiceImpl();
+	  }
+	  
+	  @Bean
+	  public EmbeddedServletContainerFactory servletContainer() {
+
+	      TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
+	      if (tomcatAjpEnabled)
+	      {
+	          Connector ajpConnector = new Connector("AJP/1.3");
+	          ajpConnector.setProtocol("AJP/1.3");
+	          ajpConnector.setPort(ajpPort);
+	          ajpConnector.setSecure(false);
+	          ajpConnector.setAllowTrace(false);
+	          ajpConnector.setScheme("http");
+	          tomcat.addAdditionalTomcatConnectors(ajpConnector);
+	      }
+
+	      return tomcat;
 	  }
 	  
 //    @Bean

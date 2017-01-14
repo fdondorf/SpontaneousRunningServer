@@ -34,7 +34,7 @@ public class UserEntity implements User, Serializable {
 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<RoleEntity> roles;
 
-	protected UserEntity() {
+	public UserEntity() {
 		;
 	}
 

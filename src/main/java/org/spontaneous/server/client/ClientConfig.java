@@ -1,8 +1,11 @@
 package org.spontaneous.server.client;
 
+import org.spontaneous.server.client.service.rest.CustomerController;
 import org.spontaneous.server.client.service.rest.RegisterController;
 import org.spontaneous.server.client.service.rest.RevokeTokenController;
+import org.spontaneous.server.client.service.rest.TrackManagementController;
 import org.spontaneous.server.client.service.rest.UserManagementController;
+import org.spontaneous.server.ping.api.TestServerPingController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -46,6 +49,26 @@ public class ClientConfig {
   }
 
   /**
+   * Defines the trackManagementController bean.
+   *
+   * @return the trackManagementController bean
+   */
+  @Bean
+  public TrackManagementController trackManagementController() {
+    return new TrackManagementController();
+  }
+  
+  /**
+   * Defines the customerController bean.
+   *
+   * @return the customerController bean
+   */
+  @Bean
+  public CustomerController customerController() {
+    return new CustomerController();
+  }
+  
+  /**
    * Defines the registerController bean.
    *
    * @return the registerController bean
@@ -53,6 +76,16 @@ public class ClientConfig {
   @Bean
   public RegisterController registerController() {
     return new RegisterController();
+  }
+
+  /**
+   * Defines the registerController bean.
+   *
+   * @return the registerController bean
+   */
+  @Bean
+  public TestServerPingController pingController() {
+    return new TestServerPingController();
   }
   
 }

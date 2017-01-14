@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class RegisterController {
+public class RegisterController extends AbstractClientController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(RegisterController.class);
 

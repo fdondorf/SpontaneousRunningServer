@@ -28,7 +28,7 @@ public class ParcelshopResourceOwnerPasswordTokenGranter extends ResourceOwnerPa
   private final AuthenticationManager authenticationManager;
 
   /**
-   * Instantiates a new Parcelshop resource owner password token granter.
+   * Instantiates a new Speontaneous resource owner password token granter.
    *
    * @param authenticationManager the authentication manager
    * @param tokenServices the token services

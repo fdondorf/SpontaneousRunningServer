@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 /**
  * Configuration for the OAuth2 ResourceServer.
  * <p>
- * Protected resources are all mobile client requests: "/spontaneous"
+ * Protected resources are all mobile client requests: "/spontaneous/secure"
  *
  * @author Horst Jilg
  */
@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-  @Value("spontaneous")
+  @Value("spontaneous/secure")
   private String resourceId;
 
   @Override
@@ -29,8 +29,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().requestMatchers().antMatchers("/spontaneous/**").and()
-        .authorizeRequests().antMatchers("/**").hasRole("USER");
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().requestMatchers().antMatchers("/spontaneous/secure/**").and()
+        .authorizeRequests().antMatchers("/secure/**").hasRole("USER");
   }
 
 }
