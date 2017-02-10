@@ -51,9 +51,10 @@ public class TrackManagementController extends AbstractClientAuthController {
 	  @RequestMapping(value = "/tracks", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	  public ResponseEntity<TracksResult> getTracks(@RequestBody Header headerData, Principal principal) throws UserPrincipalNotFoundException {
 		
-		  LOG.debug("Calling Controller 'tracks'");
+		  LOG.info("Calling Controller 'tracks'");
 			
-		  // TODO: Validate AppVersion
+		  // TODO 
+		  // validateInputRequestData(headerData);
 
 		  TracksResult result = new TracksResult();
 		  
@@ -77,10 +78,11 @@ public class TrackManagementController extends AbstractClientAuthController {
 	  @RequestMapping(value = "/tracks/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	  public ResponseEntity<TrackResult> getTrackDetails(@PathVariable Long id, @RequestBody Header headerData, Principal principal) throws UserPrincipalNotFoundException {
 		  
-		  LOG.debug("Calling Controller 'trackdetails'");
+		  LOG.info("Calling Controller 'trackdetails'");
 			
 		  // TODO: Validate Params and Security, AppVersion
-
+		  // validateInputRequestData(headerData);
+		  
 		  // User validation
 		  AuthenticatedUser authUser = getAuthUser(principal);
 		  if (authUser == null) throw new UserPrincipalNotFoundException("For the given principal no user was found...");
@@ -96,11 +98,12 @@ public class TrackManagementController extends AbstractClientAuthController {
 	  }
 
 	  @RequestMapping(value = "/updateTrack", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	  public ResponseEntity<Void> updateAllTracks(@RequestBody TrackModel track, Principal principal) throws UserPrincipalNotFoundException {
+	  public ResponseEntity<Void> updateTrack(@RequestBody TrackModel track, Principal principal) throws UserPrincipalNotFoundException {
 		  
-		  LOG.debug("Calling Controller 'updateTrack'");
+		  LOG.info("Calling Controller 'updateTrack'");
 			
 		  // TODO: Validate AppVersion
+		  // validateInputRequestData(track);
 		  
 		  // User validation
 		  AuthenticatedUser authUser = getAuthUser(principal);
@@ -110,7 +113,8 @@ public class TrackManagementController extends AbstractClientAuthController {
 		  TrackEntity trackEntity = TrackMapper.mapTrackModelToEntity(track);
 		  
 		  // TODO: Delete this workaround
-		  track.setUserId(1L);
+		  if (track.getUserId() == null)
+			  track.setUserId(1L);
 		  
 		  trackEntity.setUser(userRepository.findOne(Long.valueOf(track.getUserId())));
 		  
@@ -129,10 +133,11 @@ public class TrackManagementController extends AbstractClientAuthController {
 	  @RequestMapping(value = "/track", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	  public ResponseEntity<Void> createTrack(@RequestBody TrackModel track, Principal principal) throws UserPrincipalNotFoundException {
 		  
-		  LOG.debug("Calling Controller 'createTrack'");
+		  LOG.info("Calling Controller 'createTrack' with params " + track.toString());
 			
 		  // TODO: Validate AppVersion
-
+		  // validateInputRequestData(track);
+		  
 		  // User validation
 		  AuthenticatedUser authUser = getAuthUser(principal);
 		  if (authUser == null) throw new UserPrincipalNotFoundException("For the given principal no user was found...");
@@ -143,6 +148,7 @@ public class TrackManagementController extends AbstractClientAuthController {
 		  // TODO: Delete this workaround
 		  if (track.getUserId() == -1) {
 			  track.setUserId(1L);
+			  LOG.info("Set userId of track to 1");
 		  }
 		  
 		  UserEntity user = userRepository.findOne(Long.valueOf(track.getUserId()));
@@ -164,10 +170,11 @@ public class TrackManagementController extends AbstractClientAuthController {
 	  @RequestMapping(value = "/tracks/delete/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	  public ResponseEntity<Void> deleteTrack(@PathVariable Long id, @RequestBody Header headerData, Principal principal) throws UserPrincipalNotFoundException {
 		  
-		  LOG.debug("Calling Controller 'deleteTrack' with id [" + id + "]");
+		  LOG.info("Calling Controller 'deleteTrack' with id [" + id + "]");
 			
 		  // TODO: Validate AppVersion
-
+		  // validateInputRequestData(headerData);
+		  
 		  // User validation
 		  AuthenticatedUser authUser = getAuthUser(principal);
 		  if (authUser == null) throw new UserPrincipalNotFoundException("For the given principal no user was found...");

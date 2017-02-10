@@ -10,12 +10,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.spontaneous.server.AbstractSpontaneousIntegrationTest;
+import org.spontaneous.server.client.service.Header;
 import org.spontaneous.server.client.service.TrackModel;
 import org.spontaneous.server.common.data.TrackEntityBuilder;
 import org.spontaneous.server.common.data.UserEntityBuilder;
 import org.spontaneous.server.trackmanagement.dao.TrackRepository;
 import org.spontaneous.server.trackmanagement.entity.TrackEntity;
 import org.spontaneous.server.trackmanagement.mapper.TrackMapper;
+import org.spontaneous.server.usermanagement.dao.RoleRepository;
 import org.spontaneous.server.usermanagement.dao.UserRepository;
 import org.spontaneous.server.usermanagement.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private RoleRepository roleRepository;
     
     @Autowired
     private TrackRepository trackRepository;
@@ -49,7 +54,8 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
         this.userRepository.deleteAll();
         
         // Create user
-        this.user = userRepository.save(UserEntityBuilder.aDefaultUserEntity().build());
+        this.user = userRepository.save(UserEntityBuilder.aDefaultUserEntity(
+        		roleRepository.findOne(1L)).build());
         
         // Create tracks
         createTracks(user);
@@ -75,6 +81,8 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
 					.withUser(this.user).build();
 		TrackModel trackModel = TrackMapper.mapTrackEntityToTrackModel(trackEntity);
 		trackModel.setUserId(trackEntity.getUser().getId());
+		trackModel = addHeader(trackModel, "android");
+		
 		
         ResultActions result = this.mockMvc.perform(MockMvcRequestBuilders.post("/spontaneous/secure/track")
         		.with(bearerToken(token))
@@ -101,6 +109,7 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
 					.withUser(this.user).build();
 		TrackModel trackModel = TrackMapper.mapTrackEntityToTrackModel(trackEntity);
 		trackModel.setUserId(trackEntity.getUser().getId());
+		trackModel = addHeader(trackModel, "android");
 		
         ResultActions result = this.mockMvc.perform(MockMvcRequestBuilders.post("/spontaneous/secure/updateTrack")
         		.with(bearerToken(token))
@@ -124,7 +133,7 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
 		// When
         ResultActions result = this.mockMvc.perform(MockMvcRequestBuilders.post("/spontaneous/secure/tracks/delete/{id}", tracks.get(0).getId())
         		.with(bearerToken(token))
-        		.content(createHeader())
+        		.content(json(createHeader()))
                 .contentType(contentType));
         
         // Then
@@ -134,9 +143,10 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
         revokeToken(token);
     }
  
-	private String createHeader() {
-		// TODO Auto-generated method stub
-		return "{}";
+	private Header createHeader() {
+		Header header = new Header();
+		header = addHeader(header, "android");
+		return header;
 	}
 
 	@Test
@@ -147,7 +157,7 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
 		
 		// When
         ResultActions result = this.mockMvc.perform(MockMvcRequestBuilders.post("/spontaneous/secure/tracks").with(bearerToken(token))
-        		.content("{}")
+        		.content(json(createHeader()))
                 .contentType(contentType));
         
         // Then
@@ -170,11 +180,12 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
 		// When
         ResultActions result = this.mockMvc.perform(MockMvcRequestBuilders.post("/spontaneous/secure/tracks/{id}", tracks.get(0).getId())
         		.with(bearerToken(token))
-        		.content(createHeader())
+        		.content(json(createHeader()))
                 .contentType(contentType));
         
         // Then
-        result.andExpect(MockMvcResultMatchers.status().isOk());
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+        	.andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("trackDetails")));
         
         revokeToken(token);
     }

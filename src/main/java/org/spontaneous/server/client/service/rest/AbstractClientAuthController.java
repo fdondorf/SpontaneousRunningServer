@@ -6,14 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spontaneous.server.auth.logic.api.AuthenticatedUser;
 import org.spontaneous.server.auth.logic.api.AuthenticationService;
-import org.spontaneous.server.auth.logic.impl.TimeToLiveTokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.common.exceptions.UnauthorizedClientException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author fdondorf
  */
 @RequestMapping("/spontaneous/secure")
-public class AbstractClientAuthController {
+public class AbstractClientAuthController extends AbstractClientController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractClientAuthController.class);
 	
@@ -38,10 +33,6 @@ public class AbstractClientAuthController {
 	  
 	  @Autowired
 	  protected TokenStore tokenStore;
-	  
-//	  @Autowired
-//	  @Qualifier("authServerTokenServiceBean")
-//	  protected AuthorizationServerTokenServices authorizationServerTokenServices;
 	  
 	  /**
 	   * Get the authenticated user.

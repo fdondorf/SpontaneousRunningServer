@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -31,7 +32,7 @@ public class UserEntity implements User, Serializable {
 	private String email;
 	private String password;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER) //, cascade=CascadeType.ALL)
 	private List<RoleEntity> roles;
 
 	public UserEntity() {

@@ -12,6 +12,7 @@ import org.spontaneous.server.AbstractSpontaneousIntegrationTest;
 import org.spontaneous.server.common.data.TrackEntityBuilder;
 import org.spontaneous.server.common.data.UserEntityBuilder;
 import org.spontaneous.server.trackmanagement.entity.TrackEntity;
+import org.spontaneous.server.usermanagement.dao.RoleRepository;
 import org.spontaneous.server.usermanagement.dao.UserRepository;
 import org.spontaneous.server.usermanagement.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class TrackRepositoryTest extends AbstractSpontaneousIntegrationTest {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@Before
 	public void setUp() {
@@ -91,7 +94,8 @@ public class TrackRepositoryTest extends AbstractSpontaneousIntegrationTest {
 	}
 	
 	private UserEntity createTestUser() {
-		return userRepository.save(UserEntityBuilder.aDefaultUserEntity().build());
+		return userRepository.save(UserEntityBuilder.aDefaultUserEntity(
+				roleRepository.findOne(1L)).build());
 	}
 	
 	

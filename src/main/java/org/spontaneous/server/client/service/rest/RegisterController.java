@@ -1,11 +1,13 @@
 package org.spontaneous.server.client.service.rest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spontaneous.server.client.service.RegisteredUserResult;
+import org.spontaneous.server.usermanagement.dao.RoleRepository;
 import org.spontaneous.server.usermanagement.dao.UserRepository;
 import org.spontaneous.server.usermanagement.entity.RoleEntity;
 import org.spontaneous.server.usermanagement.entity.UserEntity;
@@ -27,6 +29,10 @@ public class RegisterController extends AbstractClientController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	
 	/**
 	   * Method for providing a rest interface for register a new user
 	   *
@@ -39,11 +45,8 @@ public class RegisterController extends AbstractClientController {
 
 		//TODO: Validation and Check der App-Version
 		
-		List<RoleEntity> rolesToAdd = new ArrayList<RoleEntity>();
-		rolesToAdd.add(new RoleEntity("ROLE_USER"));
-		
 		UserEntity user = new UserEntity(userTO.getFirstname(), userTO.getLastname(), 
-				userTO.getEmail(), userTO.getPassword(), rolesToAdd);
+				userTO.getEmail(), userTO.getPassword(), Arrays.asList(roleRepository.findByName("ROLE_USER")));
 		UserEntity savedUser = userRepository.save(user);
 		
 		RegisteredUserResult result = new RegisteredUserResult(savedUser.getId());

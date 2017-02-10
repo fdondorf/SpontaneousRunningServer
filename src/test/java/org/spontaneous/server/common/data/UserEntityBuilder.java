@@ -2,22 +2,19 @@ package org.spontaneous.server.common.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.spontaneous.server.usermanagement.entity.RoleEntity;
 import org.spontaneous.server.usermanagement.entity.UserEntity;
 
 public class UserEntityBuilder {
 
-	private static Random r = new Random();
-
 	private UserEntity entity = new UserEntity();
 
 	private UserEntityBuilder() {
-		//entity.setId(UUID.randomUUID().getMostSignificantBits());
+
 	}
 
-	public static UserEntityBuilder aDefaultUserEntity() {
+	public static UserEntityBuilder aDefaultUserEntity(RoleEntity role) {
 		UserEntityBuilder userEntityBuilder = new UserEntityBuilder();
 		userEntityBuilder.entity.setFirstName("Jonny");
 		userEntityBuilder.entity.setLastName("Olsen");
@@ -25,7 +22,7 @@ public class UserEntityBuilder {
 		userEntityBuilder.entity.setPassword("test");
 		
 		List<RoleEntity> roles = new ArrayList<RoleEntity>();
-		roles.add(new RoleEntity("ROLE_USER"));
+		roles.add(role);
 		userEntityBuilder.entity.setRoles(roles);
 
 		return userEntityBuilder;

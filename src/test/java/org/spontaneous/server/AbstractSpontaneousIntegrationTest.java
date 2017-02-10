@@ -9,6 +9,10 @@ import javax.servlet.Filter;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.spontaneous.server.client.service.AppSystemType;
+import org.spontaneous.server.client.service.Header;
+import org.spontaneous.server.client.service.rest.ClientProperties;
+import org.spontaneous.server.usermanagement.dao.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.http.MediaType;
@@ -33,14 +37,19 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = Application.class, initializers = ConfigFileApplicationContextInitializer.class)
-@TestPropertySource(locations="classpath:application.properties")
+@TestPropertySource(locations="classpath:application-test.properties")
 @WebAppConfiguration
 public abstract class AbstractSpontaneousIntegrationTest extends AbstractSpontaneousTest{
+	
+	@Autowired
+	private ClientProperties androidClientProperties;
+
+	@Autowired
+	private ClientProperties iosClientProperties;
 	
 	protected MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
-
 	
 	protected MockMvc mockMvc;
 	
@@ -50,9 +59,33 @@ public abstract class AbstractSpontaneousIntegrationTest extends AbstractSpontan
     @Autowired
     private Filter springSecurityFilterChain;
     
+	@Autowired
+	protected RoleRepository roleRepository;
+	
 	@Before
     public void setup() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(springSecurityFilterChain).build();
+	}
+	
+	protected <T extends Header> T addHeader(T header, String appSystem) {
+		header.setApiVersion(androidClientProperties.getApiVersion());
+		header.setAppVersion(androidClientProperties.getRecommendedAppVersion());
+		header.setAppKey(androidClientProperties.getValidAppKeys().get(0));
+		header.setAppSystem(appSystem);
+		
+		return header;
+	}
+	
+	protected ClientProperties getClientProperties(String appSystemString) {
+		AppSystemType appSystem = AppSystemType.fromName(appSystemString);
+		switch (appSystem) {
+			case ANDROID:
+		      return androidClientProperties;
+		    case IOS:
+		      return iosClientProperties;
+		    default:
+		      throw new IllegalArgumentException("not a valid app system " + appSystem);
+		}
 	}
 	
 	public String getToken(String username, String password) throws Exception {

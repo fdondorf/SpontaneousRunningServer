@@ -1,27 +1,18 @@
 package org.spontaneous.server.usermanagement.controller;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skyscreamer.jsonassert.JSONParser;
 import org.spontaneous.server.AbstractSpontaneousIntegrationTest;
 import org.spontaneous.server.Application;
-import org.spontaneous.server.usermanagement.dao.CustomerRepository;
+import org.spontaneous.server.trackmanagement.dao.TrackRepository;
 import org.spontaneous.server.usermanagement.dao.UserRepository;
 import org.spontaneous.server.usermanagement.to.UserTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -52,8 +43,8 @@ public class UserManagementControllerTest extends AbstractSpontaneousIntegration
     private UserRepository userRepository;
     
     @Autowired
-    private CustomerRepository customerRepository;
-    
+    private TrackRepository trackRepository;
+
     @Autowired
     private WebApplicationContext webApplicationContext;
     
@@ -61,9 +52,11 @@ public class UserManagementControllerTest extends AbstractSpontaneousIntegration
     public void setup() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-        // Delete all user and customer
+        // Delete tracks
+        trackRepository.deleteAll();
+        
+        // Delete all user
         this.userRepository.deleteAll();
-        this.customerRepository.deleteAll();
 
     }
 

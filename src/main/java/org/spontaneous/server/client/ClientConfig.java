@@ -1,11 +1,12 @@
 package org.spontaneous.server.client;
 
-import org.spontaneous.server.client.service.rest.CustomerController;
+import org.spontaneous.server.client.service.rest.ClientProperties;
 import org.spontaneous.server.client.service.rest.RegisterController;
 import org.spontaneous.server.client.service.rest.RevokeTokenController;
 import org.spontaneous.server.client.service.rest.TrackManagementController;
 import org.spontaneous.server.client.service.rest.UserManagementController;
 import org.spontaneous.server.ping.api.TestServerPingController;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,17 +18,17 @@ import org.springframework.context.annotation.Configuration;
 //value = { TenantSpecificClientConfig.class }) })
 public class ClientConfig {
 
-//  /**
-//   * Defines the androidClientProperties bean.
-//   *
-//   * @return the androidClientProperties bean
-//   */
-//  @Bean
-//  @ConfigurationProperties(prefix = "parcelshop.client.android")
-//  public ClientProperties androidClientProperties() {
-//    return new ClientProperties();
-//  }
-	 
+	/**
+	 * Defines the androidClientProperties bean.
+	 *
+	 * @return the androidClientProperties bean
+	 */
+	@Bean
+	@ConfigurationProperties(prefix = "spontaneous.client.android")
+	public ClientProperties androidClientProperties() {
+	  return new ClientProperties();
+	}
+
   /**
    * Defines the revokeTokenController bean.
    *
@@ -56,16 +57,6 @@ public class ClientConfig {
   @Bean
   public TrackManagementController trackManagementController() {
     return new TrackManagementController();
-  }
-  
-  /**
-   * Defines the customerController bean.
-   *
-   * @return the customerController bean
-   */
-  @Bean
-  public CustomerController customerController() {
-    return new CustomerController();
   }
   
   /**

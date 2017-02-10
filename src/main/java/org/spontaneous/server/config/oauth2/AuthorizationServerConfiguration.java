@@ -57,7 +57,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     	.withClient(clientId)
     	.secret(clientSecret)
     	.authorizedGrantTypes("password")
-    	.authorities("ROLE_USER")
+    	.authorities("ROLE_USER", "ROLE_ADMIN", "ROLE_SUPERADMIN")
     	.scopes("tracking")
     	.resourceIds(resourceId);
   }

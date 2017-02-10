@@ -42,13 +42,12 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     String password = authentication.getCredentials().toString();
     
     // Check if user exists in db
-    //org.spontaneous.server.auth.logic.api.Authentication auth = authenticationService.isAuthenticated(username, password);
     AuthenticatedUser user = (AuthenticatedUser) userDetailsService.loadUserByUsername(username);
     
     //AuthenticatedUser user = new AuthenticatedUser(username, password, Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
     ParcelshopUsernamePasswordAuthenticationToken result =
-        new ParcelshopUsernamePasswordAuthenticationToken(user, authentication.getCredentials(),
-            Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+        new ParcelshopUsernamePasswordAuthenticationToken(user, authentication.getCredentials(), user.getAuthorities());
+            //Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
     result.setDetails(authentication.getDetails());
 
     return result;
@@ -61,7 +60,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
   @PostConstruct
   public void checkConfig() {
-    LOG.warn("Using DummyAuthenticationProvider.");
+    LOG.warn("Using AuthenticationProviderImpl.");
   }
 
 }

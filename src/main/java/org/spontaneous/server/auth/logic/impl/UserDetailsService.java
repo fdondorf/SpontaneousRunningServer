@@ -54,7 +54,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         return new AuthenticatedUser(userFromDatabase.getEmail(), 
         		userFromDatabase.getPassword(), grantedAuthorities);
-        //return new org.springframework.security.core.userdetails.User(userFromDatabase.getEmail(), userFromDatabase.getPassword(), grantedAuthorities);
 
     }
 

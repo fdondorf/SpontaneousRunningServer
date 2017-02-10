@@ -92,4 +92,12 @@ public class TrackModel extends Header {
 		}
 		return this.segments.add(segment);
 	}
+
+	@Override
+	public String toString() {
+		return "TrackModel [id=" + id + ", name=" + name + ", totalDistance=" + totalDistance + ", totalDuration="
+				+ totalDuration + ", creationTime=" + creationTime + ", userId=" + userId + ", segments=" + segments
+				+ "]";
+	}
+
 }

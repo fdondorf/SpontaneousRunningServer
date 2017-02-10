@@ -19,6 +19,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 //@SpringBootApplication
 @Import({ //
@@ -33,6 +34,18 @@ public class Application {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 
+	@Value("${spontaneous.version}")
+	private String spontaneousVersion;
+
+	@Value("${spontaneous.client.apiVersion}")
+	private String spontaneousApiVersion;
+
+	@Value("${spontaneous.client.validApiVersions}")
+	private String spontaneousValidApiVersions;
+
+	@Value("${spontaneous.client.android.validAppVersions}")
+	private String spontaneousAndroidValidAppVersions;
+	
 	@Value("${tomcat.ajp.port}")
 	int ajpPort;
 
@@ -65,6 +78,19 @@ public class Application {
 	  public AuthenticationService authenticationService() {
 	    return new AuthenticationServiceImpl();
 	  }
+	  
+	  /**
+	   * Define the javax.validation Validator bean.
+	   * <p>
+	   * You can autowire a Validator instance in any class to use this validator bean.
+	   *
+	   * @return a LocalValidatorFactoryBean
+	   */
+	  @Bean
+	  public javax.validation.Validator localValidatorFactoryBean() {
+	    return new LocalValidatorFactoryBean();
+	  }
+
 	  
 	  @Bean
 	  public EmbeddedServletContainerFactory servletContainer() {
