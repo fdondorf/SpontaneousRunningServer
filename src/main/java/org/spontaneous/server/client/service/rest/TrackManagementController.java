@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spontaneous.server.auth.logic.api.AuthenticatedUser;
+import org.spontaneous.server.client.service.DeleteTrackResult;
 import org.spontaneous.server.client.service.Header;
 import org.spontaneous.server.client.service.TrackModel;
 import org.spontaneous.server.client.service.TrackResult;
@@ -168,7 +169,7 @@ public class TrackManagementController extends AbstractClientAuthController {
 	  }
 
 	  @RequestMapping(value = "/tracks/delete/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	  public ResponseEntity<Void> deleteTrack(@PathVariable Long id, @RequestBody Header headerData, Principal principal) throws UserPrincipalNotFoundException {
+	  public ResponseEntity<DeleteTrackResult> deleteTrack(@PathVariable Long id, @RequestBody Header headerData, Principal principal) throws UserPrincipalNotFoundException {
 		  
 		  LOG.info("Calling Controller 'deleteTrack' with id [" + id + "]");
 			
@@ -186,7 +187,10 @@ public class TrackManagementController extends AbstractClientAuthController {
 			  LOG.error("Eror during deleteting track with id [" + id+ "]");
 			  throw new ApplicationException(exc.getMessage(), exc);
 		  }
-		  return new ResponseEntity<Void>(HttpStatus.OK);
+		  
+		  DeleteTrackResult result = new DeleteTrackResult();
+		  result.setTrackId(id);
+		  return new ResponseEntity<DeleteTrackResult>(result, HttpStatus.OK);
 	  }
 	  
 }

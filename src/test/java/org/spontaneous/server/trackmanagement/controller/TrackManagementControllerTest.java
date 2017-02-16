@@ -136,8 +136,10 @@ public class TrackManagementControllerTest extends AbstractSpontaneousIntegratio
         		.content(json(createHeader()))
                 .contentType(contentType));
         
-        // Then
+        // Then {"trackId":21}
         result.andExpect(MockMvcResultMatchers.status().isOk());
+        result.andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("trackId")));
+        result.andExpect(MockMvcResultMatchers.content().string(Matchers.containsString(String.valueOf(tracks.get(0).getId()))));
         assertTrue(Matchers.iterableWithSize(2).matches(trackRepository.findAll()));
       
         revokeToken(token);
