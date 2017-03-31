@@ -45,11 +45,13 @@ public class TimeToLiveTokenServices extends DefaultTokenServices {
 
     if (accessToken instanceof DefaultOAuth2AccessToken) {
       DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken) accessToken;
-
-      int validitySeconds = getAccessTokenValiditySeconds(authentication.getOAuth2Request());
-      if (validitySeconds > 0) {
-        token.setExpiration(new Date(timeService.timeMillis() + (validitySeconds * 1000L)));
-      }
+      token.setExpiration(new Date(timeService.timeMillis() + (maximumTokenValiditySeconds * 1000L)));
+      
+      // TODO: If expiration of token is needed
+//      int validitySeconds = getAccessTokenValiditySeconds(authentication.getOAuth2Request());
+//      if (validitySeconds > 0) {
+//        token.setExpiration(new Date(timeService.timeMillis() + (validitySeconds * 1000L)));
+//      }
     }
 
     return accessToken;
