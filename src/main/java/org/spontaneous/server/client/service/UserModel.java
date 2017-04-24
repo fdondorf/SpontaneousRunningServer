@@ -1,6 +1,11 @@
-package org.spontaneous.server.usermanagement.to;
+package org.spontaneous.server.client.service;
 
-public class UserTO {
+/**
+ * Model containing the data of a user
+ * @author fdondorf
+ *
+ */
+public class UserModel extends Header {
 
 	private Long id;
 	private String firstname;
@@ -8,21 +13,11 @@ public class UserTO {
 	private String email;
 	private String password;
 	private String gender;
+	private byte [] image;
 	
-	public UserTO() {
-		super();
-	}
-
-	public UserTO(String firstname, String lastname, String email, String password, String gender) {
-		super();
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.email = email;
-		this.password = password;
-		this.gender = gender;
-	}
-	
-	public UserTO(Long id, String firstname, String lastname, String email, String password, String gender) {
+	public UserModel(){;}
+			
+	public UserModel(Long id, String firstname, String lastname, String email, String password, String gender, byte [] image) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
@@ -30,8 +25,9 @@ public class UserTO {
 		this.email = email;
 		this.password = password;
 		this.gender = gender;
+		this.image = image;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -79,5 +75,13 @@ public class UserTO {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
 }

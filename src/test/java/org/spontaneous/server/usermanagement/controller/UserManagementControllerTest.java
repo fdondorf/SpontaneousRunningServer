@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.spontaneous.server.AbstractSpontaneousIntegrationTest;
 import org.spontaneous.server.Application;
 import org.spontaneous.server.trackmanagement.dao.TrackRepository;
+import org.spontaneous.server.usermanagement.api.Gender;
 import org.spontaneous.server.usermanagement.dao.UserRepository;
 import org.spontaneous.server.usermanagement.to.UserTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class, initializers = ConfigFileApplicationContextInitializer.class)
-@TestPropertySource(locations="classpath:application.properties")
+@TestPropertySource(locations="classpath:application-test.properties")
 @WebAppConfiguration
 public class UserManagementControllerTest extends AbstractSpontaneousIntegrationTest {
 
@@ -63,7 +64,15 @@ public class UserManagementControllerTest extends AbstractSpontaneousIntegration
     @Test
     public void registerTest() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.post("/spontaneous/register")
-                .content(this.json(new UserTO("Flo", "Dondorf", "test@test.de", "password")))
+                .content(this.json(new UserTO("Flo", "Dondorf", "test@test.de", "password", Gender.MALE.getName())))
+                .contentType(contentType))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+    
+    @Test
+    public void updateUserTest() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/spontaneous/updateUser")
+                .content(this.json(new UserTO("Flo", "Dondorf", "test@test.de", "password", Gender.MALE.getName())))
                 .contentType(contentType))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

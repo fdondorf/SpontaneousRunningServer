@@ -7,9 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.spontaneous.server.auth.logic.api.AuthenticatedUser;
 import org.spontaneous.server.client.service.Header;
 import org.spontaneous.server.client.service.UserInfoResult;
+import org.spontaneous.server.client.service.UserModel;
+import org.spontaneous.server.usermanagement.api.Gender;
 import org.spontaneous.server.usermanagement.dao.UserRepository;
 import org.spontaneous.server.usermanagement.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +66,46 @@ public class UserManagementController extends AbstractClientAuthController {
 		  }
 
 		  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	  }
+	  
+	  
+	  public ResponseEntity<UserInfoResult> updateUser(@RequestBody UserModel userModel, Principal principal) {
+		  
+		  LOG.debug("Calling Controller 'updateUser'");
+		  
+		  // TODO: Validate Params and Security, AppVersion
+
+		  // TODO: Exception werfen wenn nicht gefunden
+		  AuthenticatedUser authUser = getAuthUser(principal);
+		  UserEntity user = userRepository.findByEmail(authUser.getUsername());
+		  if (user != null) {
+			  // TODO: New email need to be validated 
+			  // user.setEmail(userModel.getEmail());
+			  user.setFirstName(userModel.getFirstname());
+			  user.setLastName(userModel.getLastname());
+			  user.setGender(Gender.fromName(userModel.getGender()));
+			  user.setImage(userModel.getImage());
+			  
+			  UserEntity savedUser = userRepository.save(user);
+			  if (savedUser == null)
+				  throw new ApplicationContextException("Error during update of new user...");
+			  
+			  UserInfoResult userInfo = new UserInfoResult();
+			  userInfo.setUserId(user.getId());
+			  userInfo.setEmail(user.getEmail());
+			  userInfo.setFirstName(user.getFirstName());
+			  userInfo.setLastName(user.getLastName());
+			  
+			  LOG.debug("userinfo: " + userInfo);
+			  
+			  return new ResponseEntity<UserInfoResult>(userInfo, HttpStatus.OK);
+			  
+		  } else {
+			  LOG.error("No user found.");
+		  }
+		  
+		  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		  
 	  }
 	  
 }
