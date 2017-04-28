@@ -110,7 +110,7 @@ public class UserEntity implements User, Serializable {
 		this.email = email;
 	}
 
-	public Gender isGender() {
+	public Gender getGender() {
 		return gender;
 	}
 

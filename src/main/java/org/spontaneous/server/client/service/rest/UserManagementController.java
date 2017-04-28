@@ -8,6 +8,7 @@ import org.spontaneous.server.auth.logic.api.AuthenticatedUser;
 import org.spontaneous.server.client.service.Header;
 import org.spontaneous.server.client.service.UserInfoResult;
 import org.spontaneous.server.client.service.UserModel;
+import org.spontaneous.server.client.service.exception.UserNotFoundException;
 import org.spontaneous.server.usermanagement.api.Gender;
 import org.spontaneous.server.usermanagement.dao.UserRepository;
 import org.spontaneous.server.usermanagement.entity.UserEntity;
@@ -68,7 +69,7 @@ public class UserManagementController extends AbstractClientAuthController {
 		  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	  }
 	  
-	  
+	  @RequestMapping(value = "/user/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)	  
 	  public ResponseEntity<UserInfoResult> updateUser(@RequestBody UserModel userModel, Principal principal) {
 		  
 		  LOG.debug("Calling Controller 'updateUser'");
@@ -77,7 +78,7 @@ public class UserManagementController extends AbstractClientAuthController {
 
 		  // TODO: Exception werfen wenn nicht gefunden
 		  AuthenticatedUser authUser = getAuthUser(principal);
-		  UserEntity user = userRepository.findByEmail(authUser.getUsername());
+		  UserEntity user = userRepository.findOne(userModel.getId());
 		  if (user != null) {
 			  // TODO: New email need to be validated 
 			  // user.setEmail(userModel.getEmail());
@@ -102,10 +103,9 @@ public class UserManagementController extends AbstractClientAuthController {
 			  
 		  } else {
 			  LOG.error("No user found.");
+			  throw new UserNotFoundException("User with the id " + userModel.getId() + " not found!");
 		  }
-		  
-		  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		  
+		 		  
 	  }
 	  
 }
