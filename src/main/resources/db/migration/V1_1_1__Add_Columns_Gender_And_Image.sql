@@ -1,5 +1,5 @@
 -- Add columns image and gender to USER-table
-ALTER TABLE USER ADD (gender VARCHAR(255));
-ALTER TABLE USER ADD (image  MEDIUMBLOB);
+ALTER TABLE user ADD (gender VARCHAR(255));
+ALTER TABLE user ADD (image  MEDIUMBLOB);
 
-UPDATE USER SET gender = 'male';
+UPDATE user SET gender = 'male';
