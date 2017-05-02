@@ -85,7 +85,8 @@ public class UserManagementController extends AbstractClientAuthController {
 			  user.setFirstName(userModel.getFirstname());
 			  user.setLastName(userModel.getLastname());
 			  user.setGender(Gender.fromName(userModel.getGender()));
-			  user.setImage(userModel.getImage());
+			  if (userModel.getImage() != null)
+				  user.setImage(userModel.getImage());
 			  
 			  UserEntity savedUser = userRepository.save(user);
 			  if (savedUser == null)

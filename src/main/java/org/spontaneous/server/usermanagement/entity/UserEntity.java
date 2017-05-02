@@ -17,7 +17,7 @@ import org.spontaneous.server.usermanagement.api.Gender;
 import org.spontaneous.server.usermanagement.api.User;
 
 @Entity
-@Table(name="USER")
+@Table(name="user")
 public class UserEntity implements User, Serializable {
 	
 	private static final long serialVersionUID = -7447873502288352919L;
