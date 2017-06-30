@@ -80,7 +80,7 @@ public class UserManagementController extends AbstractClientAuthController {
 		  AuthenticatedUser authUser = getAuthUser(principal);
 		  UserEntity user = userRepository.findOne(userModel.getId());
 		  if (user != null) {
-			  // TODO: New email need to be validated 
+			  // TODO: New email need to be validated
 			  // user.setEmail(userModel.getEmail());
 			  user.setFirstName(userModel.getFirstname());
 			  user.setLastName(userModel.getLastname());
