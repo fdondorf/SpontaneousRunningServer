@@ -9,6 +9,8 @@ public class UserInfoResult {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String gender;
+	private byte [] image;
 	private List<String> roles;
 	
 	public Long getUserId() {
@@ -41,6 +43,22 @@ public class UserInfoResult {
 	
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	public List<String> getRoles() {

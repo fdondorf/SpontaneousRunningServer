@@ -2,4 +2,4 @@
 ALTER TABLE user ADD (gender VARCHAR(255));
 ALTER TABLE user ADD (image  MEDIUMBLOB);
 
-UPDATE user SET gender = 'male';
+UPDATE user SET gender = 'MALE';

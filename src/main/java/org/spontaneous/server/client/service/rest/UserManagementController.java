@@ -54,6 +54,8 @@ public class UserManagementController extends AbstractClientAuthController {
 			  userInfo.setEmail(user.getEmail());
 			  userInfo.setFirstName(user.getFirstName());
 			  userInfo.setLastName(user.getLastName());
+			  userInfo.setGender(user.getGender().getName());
+			  userInfo.setImage(user.getImage());
 			  
 			  for (GrantedAuthority authority : authUser.getAuthorities()) {
 				  userInfo.getRoles().add(authority.getAuthority());
@@ -76,15 +78,21 @@ public class UserManagementController extends AbstractClientAuthController {
 		  
 		  // TODO: Validate Params and Security, AppVersion
 
-		  // TODO: Exception werfen wenn nicht gefunden
+		// TODO: Exception werfen wenn nicht gefunden
 		  AuthenticatedUser authUser = getAuthUser(principal);
 		  UserEntity user = userRepository.findOne(userModel.getId());
 		  if (user != null) {
 			  // TODO: New email need to be validated
 			  // user.setEmail(userModel.getEmail());
-			  user.setFirstName(userModel.getFirstname());
-			  user.setLastName(userModel.getLastname());
-			  user.setGender(Gender.fromName(userModel.getGender()));
+			  if (userModel.getFirstname() != null) {
+				  user.setFirstName(userModel.getFirstname());
+			  }
+			  if (userModel.getLastname() != null) {
+				  user.setLastName(userModel.getLastname());
+			  }
+			  if (userModel.getGender() != null) {
+				  user.setGender(Gender.fromName(userModel.getGender()));
+			  }
 			  if (userModel.getImage() != null)
 				  user.setImage(userModel.getImage());
 			  
@@ -97,10 +105,12 @@ public class UserManagementController extends AbstractClientAuthController {
 			  userInfo.setEmail(user.getEmail());
 			  userInfo.setFirstName(user.getFirstName());
 			  userInfo.setLastName(user.getLastName());
+			  userInfo.setGender(user.getGender().getName());
+			  userInfo.setImage(user.getImage());
 			  
 			  LOG.debug("userinfo: " + userInfo);
 			  
-			  return new ResponseEntity<UserInfoResult>(userInfo, HttpStatus.OK);
+			  return new ResponseEntity<>(userInfo, HttpStatus.OK);
 			  
 		  } else {
 			  LOG.error("No user found.");
