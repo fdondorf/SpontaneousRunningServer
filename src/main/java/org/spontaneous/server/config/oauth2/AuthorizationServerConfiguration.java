@@ -45,8 +45,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   @Qualifier("authenticationManagerBean")
   private AuthenticationManager authenticationManager;
 
-  //private TokenStore tokenStore = new InMemoryTokenStore();
-
   @Autowired
   private ClientDetailsService clientDetailsService;
 
@@ -61,7 +59,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     	.scopes("tracking")
     	.resourceIds(resourceId);
   }
-
+  
   @Bean
   public TokenStore tokenStore() {
       return new InMemoryTokenStore();

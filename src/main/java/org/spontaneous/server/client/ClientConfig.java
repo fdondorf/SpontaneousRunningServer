@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Configuration;
  * The type Client config.
  */
 @Configuration
-//@ComponentScan(basePackages = { "com.dhl.parcelshop.backend.client" }, useDefaultFilters = false, includeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,//
-//value = { TenantSpecificClientConfig.class }) })
 public class ClientConfig {
 
 	/**

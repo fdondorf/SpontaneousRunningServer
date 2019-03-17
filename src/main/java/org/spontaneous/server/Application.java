@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-//@SpringBootApplication
 @Import({ //
     // Import all components of the application
 	AuthConfig.class,
@@ -109,66 +108,4 @@ public class Application {
 
 	      return tomcat;
 	  }
-	  
-//    @Bean
-//    CommandLineRunner init(final UserRepository userRepository) {
-//      
-//      return new CommandLineRunner() {
-//
-//        @Override
-//        public void run(String... arg0) throws Exception {
-//        	List<RoleEntity> roles = new ArrayList<RoleEntity>();
-//        	roles.add(new RoleEntity("ROLE_USER"));
-//        	userRepository.save(new UserEntity("fdondorf", "password", roles));
-//          
-//        }
-//        
-//      };
-//
-//    }
-    
 }
-
-//@Configuration
-//class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
-//
-//  @Autowired
-//  UserRepository userRepository;
-//
-//  @Override
-//  public void init(AuthenticationManagerBuilder auth) throws Exception {
-//    auth.userDetailsService(userDetailsService());
-//  }
-//
-//  @Bean
-//  UserDetailsService userDetailsService() {
-//    return new UserDetailsService() {
-//
-//      @Override
-//      public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        UserEntity user = userRepository.findByUsername(username);
-//        if(user != null) {
-//        return new User(user.getUsername(), user.getPassword(), true, true, true, true,
-//                AuthorityUtils.createAuthorityList("USER"));
-//        } else {
-//          throw new UsernameNotFoundException("could not find the user '"
-//                  + username + "'");
-//        }
-//      }
-//      
-//    };
-//  }
-//}
-//
-//@EnableWebSecurity
-//@Configuration
-//class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-// 
-//  @Override
-//  protected void configure(HttpSecurity http) throws Exception {
-//    http.authorizeRequests().anyRequest().fullyAuthenticated().and().
-//    httpBasic().and().
-//    csrf().disable();
-//  }
-//  
-//}
